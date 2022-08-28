@@ -2,7 +2,7 @@
 
 ### `npm run tauri dev`
 
-runs both the webapp and desktop windows. 
+Runs both the webapp and desktop windows. 
 
 ### `npm run tauri build`
 
