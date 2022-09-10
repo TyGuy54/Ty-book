@@ -5,11 +5,7 @@
 @layer components {
     .sidenav-icon {
         @apply relative flex items-center justify-center
-                h-20 w-28 mt-5 mb-10 ml-10 mx-auto shadow-lg
-                bg-gray-800 text-white text-lg
-                hover:bg-green-600 hover:text-white
-                rounded-none hover:rounded-lg
-                transition-all duration-300 ease-linear
-                cursor-pointer;
+                h-10 w-28 mt-2 mb-3 ml-3 mx-auto shadow-lg
+                text-white text-lg cursor-pointer;
     }
 }

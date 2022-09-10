@@ -15,7 +15,7 @@ export const MutliLineTextInput = () => {
         <>  
             <div>
                 <textarea 
-                        className="text-white resize-none bg-gray-700"
+                        className="text-white resize-none bg-gray-700 p-5"
                         value={text}
                         onChange={(e) => setText(e.target.value)}
                         cols={125}
