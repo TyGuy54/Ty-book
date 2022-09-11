@@ -2,32 +2,42 @@
   all(not(debug_assertions), target_os = "windows"),
   windows_subsystem = "windows"
 )]
-use std::fs::OpenOptions;
-use std::io::Write;
-use std::fs::File;
-use std::path::Path;
+// use std::fs::OpenOptions;
+// use std::io::Write;
+// use std::fs::File;
+// use std::path::Path;
+use rusqlite::{Connection, Result};
 use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
-// use std::io::Error;
 
 
-#[tauri::command]
-fn make_books(content: String) {
-  let new_page = "page.txt";
+fn make_db() -> Result<()> {
+  let conn = Connection::open("db/test.db")?;
 
-  if Path::new(new_page).exists() {
-      let mut file = OpenOptions::new()
-          .append(true)
-          .open(new_page)
-          .expect("cannot open file");
+    conn.execute(
+        "create table if not exists cat_colors (
+             id integer primary key,
+             name text not null unique
+         )",
+        [],
+    )?;
+    conn.execute(
+        "create table if not exists cats (
+             id integer primary key,
+             name text not null,
+             color_id integer not null references cat_colors(id)
+         )",
+        [],
+    )?;
 
-      file.write_all(content.as_bytes()).expect("failed to open file");
-    
-  } else {
-      let mut file = File::create(new_page).expect("failed to create file");
-      file.write_all(content.as_bytes()).expect("failed to write to file");
-  }
+    Ok(())
 
 }
+
+#[tauri::command]
+fn make_books() {
+  make_db();
+}
+
 
 
 fn menu_items() -> tauri::Menu {

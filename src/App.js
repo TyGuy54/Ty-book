@@ -5,9 +5,9 @@ export const App = () => {
   return (
     <>
       <MainPage/>
-        <div className="flex flex-col items-center justify-center">
-          <SideBar/>
-        </div>
+      <div className="flex flex-col items-center justify-center">
+        <SideBar/>
+      </div>
     </>
 
   );

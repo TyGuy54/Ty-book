@@ -27,17 +27,29 @@ export const SideBarData = [
     },
     {
         title: 'Books',
-        path: '/pages',
-        icon: <AiIcons.AiFillHome />,
+        path: '/books',
+        icon: <AiIcons.AiFillBook />,
         iconClosed: <RiIcons.RiArrowDownSFill />,
         iconOpened: <RiIcons.RiArrowUpSFill />,
+
+        subnav: 
+        [
+            {
+                title: 'Pages',
+                path: '/pages',
+                icon: <AiIcons.AiFillCopy />,
+            }
+        ]
     },
     {
-        title: 'Pages',
-        path: '/pages',
-        icon: <AiIcons.AiFillHome />,
-        iconClosed: <RiIcons.RiArrowDownSFill />,
-        iconOpened: <RiIcons.RiArrowUpSFill />,
-    }
+        title: 'Documentaion',
+        path: '/documentaion',
+        icon: <AiIcons.AiFillBook />,
+    },
+    {
+        title: 'Info',
+        path: '/info',
+        icon: <AiIcons.AiFillBook />,
+    },
 
 ]

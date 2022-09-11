@@ -7,7 +7,7 @@ export const MutliLineTextInput = () => {
     const [text, setText] = useState("")
 
     const process_text_input = async () => {
-        await invoke('make_books', { content: text})
+        await invoke('make_books')
         console.log(text)
     }
 
