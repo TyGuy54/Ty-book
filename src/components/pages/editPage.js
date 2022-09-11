@@ -1,16 +1,17 @@
 import React from 'react'
+import {MutliLineTextInput} from '../textInput/textInput'
 
-export const MainPage = () => {
-    return (
+export const EditPage = () =>{
+    return(
         <>
+            {/* <div className="bg-[#15171c] h-[80px] flex justify-start content-center"></div> */}
             <div className=" bg-gray-800">
                 <div className="h-screen bg-gray-800">
                     <div className="text-[90] text-white text-center pt-5">
-                    <h3>Ty-Book</h3>
+                        <MutliLineTextInput/>
                     </div>
                 </div>
             </div>
         </>
-        )
+    )
 }
-

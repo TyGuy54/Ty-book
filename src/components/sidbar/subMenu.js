@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import { Link } from 'react-router-dom';
 
 export const SubMenu = ({ item }) => {
     const [subnav, setSubnav] = useState(false);
@@ -7,25 +8,26 @@ export const SubMenu = ({ item }) => {
   
     return (
       <>
-        <div 
+        <Link
             className="flex text-[#e1e9fc] justify-between content-center 
                         p-[20px] list-none h-[80px] text-[18px] 
                         hover:bg-[#252831] hover:border-[#632ce4] hover:border-l-4 border-solid cursor-pointer" 
+            to={item.path}
             onClick={item.subNav && showSubnav}
         >
           <div className="inline-flex">
             {item.icon} 
             <div className="ml-[16px]">{item.title}</div>
           </div>
-          {/* <div>
+          <div>
             {item.subNav && subnav
               ? item.iconOpened
               : item.subNav
               ? item.iconClosed
               : null}
-          </div> */}
-        </div>
-        {/* {subnav &&
+          </div>
+        </Link>
+        {subnav &&
           item.subNav.map((item, index) => {
             return (
               <div 
@@ -42,7 +44,7 @@ export const SubMenu = ({ item }) => {
                 </div>
               </div>
             );
-          })} */}
+          })}
       </>
     );
   };
