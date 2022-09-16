@@ -2,43 +2,70 @@
   all(not(debug_assertions), target_os = "windows"),
   windows_subsystem = "windows"
 )]
-// use std::fs::OpenOptions;
-// use std::io::Write;
-// use std::fs::File;
-// use std::path::Path;
-use rusqlite::{Connection, Result};
+mod error_handling;
+
+use rusqlite::Connection;
+// use chrono::{Datelike, Timelike, Utc};
 use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
+use crate::error_handling::serdeSerialize::CommandResult;
+
+// I want to do soemthing like this for databse connections that
+// but for now it seems unessecary
+// struct DBConnection {}
+// impl DBConnection {
+//   pub fn new(db: &str) -> Connection {
+//       Connection::open(db)
+//         .expect("could not connect to data base")
+//   }
+// }
 
 
-fn make_db() -> Result<()> {
-  let conn = Connection::open("db/test.db")?;
+struct BooksPayload {
+  title: String,
+}
+
+
+fn insert_into_book() -> CommandResult<()>{
+  let conn = Connection::open("text.db")?;
+  Ok(())
+}
+
+// makes the books table
+#[tauri::command]
+fn make_book_db() -> CommandResult<()>{
+  let conn = Connection::open("text.db")?;
 
     conn.execute(
-        "create table if not exists cat_colors (
-             id integer primary key,
-             name text not null unique
-         )",
-        [],
-    )?;
-    conn.execute(
-        "create table if not exists cats (
-             id integer primary key,
-             name text not null,
-             color_id integer not null references cat_colors(id)
-         )",
+        "CREATE TABLE books (
+          book_id	INTEGER,
+          title	TEXT,
+          PRIMARY KEY(book_id)
+        )",
         [],
     )?;
 
     Ok(())
-
 }
 
+// makes the pages table
 #[tauri::command]
-fn make_books() {
-  make_db();
+fn make_page_db() -> CommandResult<()>{
+  let conn = Connection::open("text.db")?;
+  // let now = Utc::now();
+
+    conn.execute(
+        "CREATE TABLE pages (
+          page_id	INTEGER,
+          title	TEXT,
+          creadted_on	TEXT,
+          content	TEXT,
+          PRIMARY KEY(page_id),
+          FOREIGN KEY(page_id) REFERENCES books(book_id)
+        )",
+        [],
+    )?;
+    Ok(())
 }
-
-
 
 fn menu_items() -> tauri::Menu {
   let quit = CustomMenuItem::new("quit".to_string(), "Quit");
@@ -66,7 +93,7 @@ fn main() {
         _ => {}
       }
     })
-    .invoke_handler(tauri::generate_handler![make_books])
+    .invoke_handler(tauri::generate_handler![make_book_db, make_page_db])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
