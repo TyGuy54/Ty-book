@@ -25,6 +25,43 @@ struct BooksPayload {
   book_title: String,
 }
 
+struct PagesPayload {
+  paget_title: String,
+  creadted_on: String,
+  content: String,
+}
+
+// makes the books table
+#[tauri::command]
+fn database_setup() -> CommandResult<()>{
+  let conn = Connection::open("/home/tyguy/Desktop/ty-book/text.db")?;
+
+    conn.execute(
+        "CREATE TABLE if not exists books (
+          book_id	INTEGER,
+          book_title	TEXT,
+          PRIMARY KEY(book_id)
+        )",
+        [],
+    )?;
+
+    conn.execute(
+      "CREATE TABLE if not exists pages (
+        page_id	INTEGER,
+        title	TEXT,
+        creadted_on	TEXT,
+        content	TEXT,
+        PRIMARY KEY(page_id),
+        FOREIGN KEY(page_id) REFERENCES books(book_id)
+      )",
+      [],
+    )?;
+
+    print!("Made Db and Tables: \n");
+
+    Ok(())
+}
+
 #[tauri::command]
 fn insert_into_book(data: String) -> CommandResult<()>{
   let conn = Connection::open("/home/tyguy/Desktop/ty-book/text.db")?;
@@ -37,44 +74,6 @@ fn insert_into_book(data: String) -> CommandResult<()>{
   )?;
 
   Ok(())
-}
-
-// makes the books table
-#[tauri::command]
-fn make_book_db() -> CommandResult<()>{
-  let conn = Connection::open("/home/tyguy/Desktop/ty-book/text.db")?;
-
-    conn.execute(
-        "CREATE TABLE books (
-          book_id	INTEGER,
-          book_title	TEXT,
-          PRIMARY KEY(book_id)
-        )",
-        [],
-    )?;
-    print!("Made Db: \n");
-
-    Ok(())
-}
-
-// makes the pages table
-#[tauri::command]
-fn make_page_db() -> CommandResult<()>{
-  let conn = Connection::open("text.db")?;
-  // let now = Utc::now();
-
-    conn.execute(
-        "CREATE TABLE pages (
-          page_id	INTEGER,
-          title	TEXT,
-          creadted_on	TEXT,
-          content	TEXT,
-          PRIMARY KEY(page_id),
-          FOREIGN KEY(page_id) REFERENCES books(book_id)
-        )",
-        [],
-    )?;
-    Ok(())
 }
 
 fn menu_items() -> tauri::Menu {
@@ -103,7 +102,7 @@ fn main() {
         _ => {}
       }
     })
-    .invoke_handler(tauri::generate_handler![make_book_db, make_page_db, insert_into_book])
+    .invoke_handler(tauri::generate_handler![database_setup, insert_into_book])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

@@ -5,7 +5,8 @@ import {Button} from '../util/button'
 import {invoke} from '@tauri-apps/api'
 
 export const MakeBooks = () => {
-    const [text, setText] = useState("")
+    const [bookTitle, setBookTitle] = useState("")
+    const [pageTitle, setPageTitle] = useState("")
 
     const process_text_input = async (data) => {
         await invoke('insert_into_book', {data: data})
@@ -19,46 +20,44 @@ export const MakeBooks = () => {
         <>  
         <div className="pt-10 pl-96">
             <div className="w-full max-w-xs">
-                <form >
-                    <div className="mb-4">
-                        <h2 className="text-white font-semibold pb-5">Make a Book</h2>
-                        <label className="block text-white text-sm font-semibold mb-2 mr-60">
+                <form>
+                    <div className="mb-6">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             Book Title
                         </label>
-                        <input 
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                            type="text" 
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                        />
-                        <h2 className="text-white font-semibold pb-5 mt-10">Make a Page</h2>
-                        <label className="block text-white text-sm font-semibold mb-2 mr-60">
-                            Page Title
-                        </label>
-                        <input 
-                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-                            type="text" 
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                        />
-                        <label className="block text-white text-sm font-semibold mb-2 mr-60 mt-10">
-                            Page Content
-                        </label>
-                        <MutliLineTextInput/>
-                        <Button 
-                            click={() => {process_text_input(text)}}
-                            name="make book"
+                        <input
+                            className="bg-gray-50 border border-gray-300
+                                        text-gray-900 text-sm rounded-lg focus:ring-blue-500
+                                        focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
+                                        dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
+                                        dark:focus:border-blue-500" require
+                            value={bookTitle}
+                            onChange={(e) => setBookTitle(e.target.value)}
                         />
                     </div>
                     <div className="mb-6">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                            Page Title
+                        </label>
+                        <input
+                            className="bg-gray-50 border border-gray-300
+                                        text-gray-900 text-sm rounded-lg focus:ring-blue-500
+                                        focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
+                                        dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
+                                        dark:focus:border-blue-500" require
+                            value={pageTitle}
+                            onChange={(e) => setPageTitle(e.target.value)}
+                        />
+                    </div>
+                    <div className="mb-6">
+                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                            Page Content
+                        </label>
+                        <MutliLineTextInput/>
                     </div>
                 </form>
             </div>
         </div>
-            <Button 
-                click={make_db}
-                name="make db"
-            />
         </>
     )
 }
