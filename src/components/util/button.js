@@ -3,9 +3,9 @@ export const Button = (props) => {
         <div>
             <button 
                 className="bg-blue-400 rounded-full m-5 p-3 font-bold"
-                onClick={props.value}
+                onClick={props.click}
             >  
-                Save Changes
+                {props.name}
             </button>
         </div>
     )

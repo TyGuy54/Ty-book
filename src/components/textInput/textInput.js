@@ -6,10 +6,10 @@ import {invoke} from '@tauri-apps/api'
 export const MutliLineTextInput = () => {
     const [text, setText] = useState("")
 
-    const process_text_input = async () => {
-        await invoke('make_book_db')
-        console.log(text)
-    }
+    // const process_text_input = async () => {
+    //     await invoke('make_book_db')
+    //     console.log(text)
+    // }
 
     return(
         <>  
@@ -22,7 +22,7 @@ export const MutliLineTextInput = () => {
                         rows={20}   
                     />
             </div>
-            <Button value={process_text_input}/>
+            {/* <Button value={process_text_input}/> */}
         </>
     )
 }

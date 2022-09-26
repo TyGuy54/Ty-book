@@ -6,6 +6,7 @@ mod error_handling;
 
 use rusqlite::Connection;
 // use chrono::{Datelike, Timelike, Utc};
+// use std::collections::HashMap;
 use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
 use crate::error_handling::serdeSerialize::CommandResult;
 
@@ -21,28 +22,37 @@ use crate::error_handling::serdeSerialize::CommandResult;
 
 
 struct BooksPayload {
-  title: String,
+  book_title: String,
 }
 
+#[tauri::command]
+fn insert_into_book(data: String) -> CommandResult<()>{
+  let conn = Connection::open("/home/tyguy/Desktop/ty-book/text.db")?;
 
-fn insert_into_book() -> CommandResult<()>{
-  let conn = Connection::open("text.db")?;
+  let book_title = data;
+  println!("inerting into db: {}", book_title);
+  conn.execute(
+    "INSERT INTO books (book_title) VALUES (?1)",
+    &[&book_title]
+  )?;
+
   Ok(())
 }
 
 // makes the books table
 #[tauri::command]
 fn make_book_db() -> CommandResult<()>{
-  let conn = Connection::open("text.db")?;
+  let conn = Connection::open("/home/tyguy/Desktop/ty-book/text.db")?;
 
     conn.execute(
         "CREATE TABLE books (
           book_id	INTEGER,
-          title	TEXT,
+          book_title	TEXT,
           PRIMARY KEY(book_id)
         )",
         [],
     )?;
+    print!("Made Db: \n");
 
     Ok(())
 }
@@ -93,7 +103,7 @@ fn main() {
         _ => {}
       }
     })
-    .invoke_handler(tauri::generate_handler![make_book_db, make_page_db])
+    .invoke_handler(tauri::generate_handler![make_book_db, make_page_db, insert_into_book])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
