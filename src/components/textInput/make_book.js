@@ -8,12 +8,16 @@ export const MakeBooks = () => {
     const [bookTitle, setBookTitle] = useState("")
     const [pageTitle, setPageTitle] = useState("")
 
-    const process_text_input = async (data) => {
-        await invoke('insert_into_book', {data: data})
+    const process_text_input = async (book_title, page_title, page_content) => {
+        await invoke('insert_into_db', {bookName: book_title, pageName: page_title, pageContent: page_content})
+    }
+
+    const retuen_data = async () => {
+        await invoke('return_data')
     }
 
     const make_db = async () => {
-        await invoke('make_book_db')
+        await invoke('database_setup')
     }
 
     return(
@@ -37,7 +41,7 @@ export const MakeBooks = () => {
                     </div>
                     <div className="mb-6">
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                            Page Title
+                            Page Titl
                         </label>
                         <input
                             className="bg-gray-50 border border-gray-300
@@ -54,6 +58,18 @@ export const MakeBooks = () => {
                             Page Content
                         </label>
                         <MutliLineTextInput/>
+                        <Button
+                            name="Submit"
+                            click={() => process_text_input(bookTitle, pageTitle, "super cool content")}
+                        />
+                        <Button
+                            name="Make DB"
+                            click={make_db}
+                        />
+                        <Button
+                            name="return"
+                            click={retuen_data}
+                        />
                     </div>
                 </form>
             </div>
