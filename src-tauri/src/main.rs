@@ -6,7 +6,7 @@ mod error_handling;
 
 use rusqlite::Connection;
 // use chrono::{Datelike, Timelike, Utc};
-// use std::collections::HashMap;
+use std::collections::HashMap;
 use tauri::{CustomMenuItem, Menu, MenuItem, Submenu};
 use crate::error_handling::serdeSerialize::CommandResult;
 
@@ -20,21 +20,28 @@ use crate::error_handling::serdeSerialize::CommandResult;
 //   }
 // }
 
-
+#[derive(Debug)]
 struct BooksPayload {
   book_title: String,
 }
-
+#[derive(Debug)]
 struct PagesPayload {
   page_title: String,
   created_on: String,
   content: String,
 }
 
+// #[derive(Debug)]
+// struct SelectedData {
+//   // id: u16,
+//   book_title: String,
+//   page_title: String,
+// }
+
 // makes the books table
 #[tauri::command]
 fn database_setup() -> CommandResult<()>{
-  let conn = Connection::open("/home/tyguy/Desktop/ty-book/text.db")?;
+  let conn = Connection::open("text.db")?;
 
     conn.execute(
         "CREATE TABLE if not exists books (
@@ -65,7 +72,7 @@ fn database_setup() -> CommandResult<()>{
 
 #[tauri::command]
 fn insert_into_db(book_name: String, page_name: String, page_content: String) -> CommandResult<()>{
-  let conn = Connection::open("/home/tyguy/Desktop/ty-book/text.db")?;
+  let conn = Connection::open("text.db")?;
   let book_payload = BooksPayload {book_title: book_name};
   let page_payload = PagesPayload {
     page_title: page_name, 
@@ -95,10 +102,10 @@ fn insert_into_db(book_name: String, page_name: String, page_content: String) ->
 }
 
 #[tauri::command]
-fn return_data() -> CommandResult<()> {
-  let conn = Connection::open("/home/tyguy/Desktop/ty-book/text.db")?;
+fn return_data() -> CommandResult<Vec<HashMap<String, String>>> {
+  let conn = Connection::open("text.db")?;
 
-  let data = conn.execute("
+  let mut data = conn.prepare("
       SELECT
         book_id
         page_id,
@@ -106,13 +113,35 @@ fn return_data() -> CommandResult<()> {
         page_title
       FROM
         pages
-      INNER JOIN books ON pages.page_id = books.book_id",
-    []
+      INNER JOIN books ON pages.page_id = books.book_id"
   )?;
 
-  println!("{}", data);
 
-  Ok(())
+
+  let return_data = data.query_map([], |row| {
+    // Ok(SelectedData{
+    //   // id: row.get(0)?,
+    //   book_title: row.get(1)?,
+    //   page_title: row.get(2)?,
+    // })
+    let mut book_data =  HashMap::new();
+
+    let book_title = row.get(1)?;
+    let page_title = row.get(2)?;
+
+    book_data.insert(String::from("book_title"), book_title);
+    book_data.insert(String::from("page_title"), page_title);
+    
+    Ok(book_data)
+  })?;
+
+
+    let mut x = Vec::new();
+    for results in return_data {
+        x.push(results?);
+    }
+
+  Ok(x)
 }
 
 fn menu_items() -> tauri::Menu {

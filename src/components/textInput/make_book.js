@@ -12,8 +12,10 @@ export const MakeBooks = () => {
         await invoke('insert_into_db', {bookName: book_title, pageName: page_title, pageContent: page_content})
     }
 
-    const retuen_data = async () => {
-        await invoke('return_data')
+    const retuen_data = (e) => {
+        e.preventDefault();
+        let data = invoke('return_data')
+        console.log(data)
     }
 
     const make_db = async () => {
@@ -34,7 +36,7 @@ export const MakeBooks = () => {
                                         text-gray-900 text-sm rounded-lg focus:ring-blue-500
                                         focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
                                         dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
-                                        dark:focus:border-blue-500" require
+                                        dark:focus:border-blue-500"
                             value={bookTitle}
                             onChange={(e) => setBookTitle(e.target.value)}
                         />
@@ -48,7 +50,7 @@ export const MakeBooks = () => {
                                         text-gray-900 text-sm rounded-lg focus:ring-blue-500
                                         focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700
                                         dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500
-                                        dark:focus:border-blue-500" require
+                                        dark:focus:border-blue-500"
                             value={pageTitle}
                             onChange={(e) => setPageTitle(e.target.value)}
                         />
@@ -68,7 +70,7 @@ export const MakeBooks = () => {
                         />
                         <Button
                             name="return"
-                            click={retuen_data}
+                            click={(e) => retuen_data(e)}
                         />
                     </div>
                 </form>
