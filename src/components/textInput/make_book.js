@@ -8,7 +8,8 @@ export const MakeBooks = () => {
     const [bookTitle, setBookTitle] = useState("")
     const [pageTitle, setPageTitle] = useState("")
 
-    const process_text_input = async (book_title, page_title, page_content) => {
+    const process_text_input = async (book_title, page_title, page_content, e) => {
+        e.preventDefault();
         await invoke('insert_into_db', {bookName: book_title, pageName: page_title, pageContent: page_content})
     }
 
@@ -18,7 +19,8 @@ export const MakeBooks = () => {
         console.log(data)
     }
 
-    const make_db = async () => {
+    const make_db = async (e) => {
+        e.preventDefault();
         await invoke('database_setup')
     }
 
@@ -62,15 +64,11 @@ export const MakeBooks = () => {
                         <MutliLineTextInput/>
                         <Button
                             name="Submit"
-                            click={() => process_text_input(bookTitle, pageTitle, "super cool content")}
+                            click={(e) => process_text_input(bookTitle, pageTitle, "super cool content", e)}
                         />
                         <Button
                             name="Make DB"
-                            click={make_db}
-                        />
-                        <Button
-                            name="return"
-                            click={(e) => retuen_data(e)}
+                            click={(e) => make_db(e)}
                         />
                     </div>
                 </form>

@@ -1,6 +1,6 @@
 import {useState} from 'react';
-import {SideBarData} from '../sidbar/sidbarData'
-import {SubMenu} from '../sidbar/subMenu'
+import {SideBarData} from './sidbarData'
+import {SubMenu} from './subMenu'
 import * as FaIcons from "react-icons/fa";
 import * as AiIcons from "react-icons/ai";
 
