@@ -7,7 +7,7 @@ export const EditPage = () =>{
         <>
             <div className=" bg-gray-800">
                 <div className="h-screen bg-gray-800">
-                    <div className="text-[90] text-white text-center pt-5">
+                    <div className="text-[90px] text-white text-center pt-5">
                         <MakeBooks/>
                     </div>
                 </div>

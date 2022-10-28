@@ -98,7 +98,9 @@ pub fn return_data() -> CommandResult<Vec<HashMap<String, String>>> {
         book_id
         page_id,
         book_title,
-        page_title
+        page_title,
+        created_on,
+        content
       FROM
         pages
       INNER JOIN books ON pages.page_id = books.book_id"
@@ -116,18 +118,22 @@ pub fn return_data() -> CommandResult<Vec<HashMap<String, String>>> {
 
     let book_title = row.get(1)?;
     let page_title = row.get(2)?;
+    let created_on = row.get(3)?;
+    let content = row.get(4)?;
 
     book_data.insert(String::from("book_title"), book_title);
     book_data.insert(String::from("page_title"), page_title);
+    book_data.insert(String::from("created_on"), created_on);
+    book_data.insert(String::from("content"), content);
     
     Ok(book_data)
   })?;
 
 
-    let mut x = Vec::new();
+    let mut data_to_send = Vec::new();
     for results in return_data {
-        x.push(results?);
+        data_to_send.push(results?);
     }
 
-  Ok(x)
+  Ok(data_to_send)
 }

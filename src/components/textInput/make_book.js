@@ -7,16 +7,11 @@ import {invoke} from '@tauri-apps/api'
 export const MakeBooks = () => {
     const [bookTitle, setBookTitle] = useState("")
     const [pageTitle, setPageTitle] = useState("")
+    const [pageContent, setPageContent] = useState("")
 
     const process_text_input = async (book_title, page_title, page_content, e) => {
         e.preventDefault();
         await invoke('insert_into_db', {bookName: book_title, pageName: page_title, pageContent: page_content})
-    }
-
-    const retuen_data = (e) => {
-        e.preventDefault();
-        let data = invoke('return_data')
-        console.log(data)
     }
 
     const make_db = async (e) => {
@@ -61,10 +56,10 @@ export const MakeBooks = () => {
                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             Page Content
                         </label>
-                        <MutliLineTextInput/>
+                        <MutliLineTextInput text={pageContent} setText={(e) => setPageContent(e.target.value)}/>
                         <Button
                             name="Submit"
-                            click={(e) => process_text_input(bookTitle, pageTitle, "super cool content", e)}
+                            click={(e) => process_text_input(bookTitle, pageTitle, pageContent, e)}
                         />
                         <Button
                             name="Make DB"

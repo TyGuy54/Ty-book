@@ -8,7 +8,9 @@ const retunedBookData = () => {
         for (let index of data) {
             arr.push({
                     title: index.book_title,
-                    path: `/books/${index.book_title}`,
+                    created_on: index.created_on,
+                    content: index.content,
+                    path: `/books/${index.book_title}`.replace(" ", ""),
                 })
         } 
     })
