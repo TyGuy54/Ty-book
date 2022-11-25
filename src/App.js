@@ -16,7 +16,7 @@ export const App = () => {
         <Route path="/" element={<MainPage/>} />
         <Route path="/view-books" element={<ViewPage/>} />
         <Route path="/make-books" element={<EditPage/>} />
-        <Route path="books/:type" element={<BooksPage/>}/>
+        <Route path="books/:type/:content" element={<BooksPage/>}/>
       </Routes>
     </Router>
     </>

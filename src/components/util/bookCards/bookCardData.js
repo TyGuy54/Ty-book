@@ -7,10 +7,11 @@ const retunedBookData = () => {
     invoke('return_data').then((data) => {
         for (let index of data) {
             arr.push({
-                    title: index.book_title,
+                    book_title: index.book_title,
+                    page_title: index.page_title,
                     created_on: index.created_on,
                     content: index.content,
-                    path: `/books/${index.book_title}`.replace(" ", ""),
+                    path: `/books/${index.book_title}/${index.content}`.replace(" ", ""),
                 })
         } 
     })

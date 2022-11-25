@@ -10,10 +10,10 @@ export const ViewPage = () => {
     return (
         <div className=" bg-gray-800">
             <div className="h-screen bg-gray-800">
-                <div className="text-[90px] text-white text-center pt-5">
+                <div className="text-white text-center pt-5">
                     <h3>View Page</h3>
                 </div>
-                <div className="px-96 py-10">
+                <div className="px-96 py-10 bg-gray-800">
                     <BookCards/>
                 </div>
             </div>
